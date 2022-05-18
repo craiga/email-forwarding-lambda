@@ -1,0 +1,46 @@
+[tool.isort]
+profile = "black"
+
+[tool.pylint.master]
+load-plugins = [
+    "pylint.extensions.bad_builtin",
+    "pylint.extensions.mccabe",
+    "pylint_absolute_imports",
+    "pylint_pytest",
+]
+
+[tool.pylint.basic]
+docstring-min-length = 5
+include-naming-hint = true
+
+[tool.pylint.similarities]
+ignore-imports = true
+ignore-comments = true
+ignore-docstrings = false
+ignore-signatures = true
+
+[tool.pylint.spelling]
+spelling-dict = "en_GB"
+spelling-private-dict-file = ".dictionary"
+
+[tool.pylint.format]
+max-line-length = 88  # https://black.readthedocs.io/en/stable/the_black_code_style.html#line-length
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+]
+
+[tool.black]
+preview = true
+
+[tool.mypy]
+strict = true
+
+[[tool.mypy.overrides]]
+module = ["moto"]
+ignore_missing_imports = true
+
+[tool.pydocstyle]
+convention = "pep257"
+add-ignore = ["D1"]

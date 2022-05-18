@@ -1,0 +1,9 @@
+boto3
+boto3-stubs[essential]
+moto[s3,ses]
+mypy
+pip-tools
+pyenchant
+pylint-pytest
+pylint_absolute_imports
+pytest
