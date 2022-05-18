@@ -20,7 +20,7 @@ ignore-docstrings = false
 ignore-signatures = true
 
 [tool.pylint.spelling]
-spelling-dict = "en_GB"
+spelling-dict = "en_US"
 spelling-private-dict-file = ".dictionary"
 
 [tool.pylint.format]
