@@ -9,7 +9,7 @@ import pytest
 def mock_recipients() -> Generator[None, None, None]:
     with mock.patch.dict(
         os.environ,
-        {"RECIPIENTS": "Craig Anderson <craiga@craiga.id.au>; <craig@uhf62.co.uk>"},
+        {"RECIPIENTS": "Craig Anderson <craiga@craiga.id.au>, <craig@uhf62.co.uk>"},
     ):
         yield
 

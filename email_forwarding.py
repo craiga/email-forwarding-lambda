@@ -25,7 +25,7 @@ def lambda_handler(event: Mapping[str, Any], context: object) -> None:
     except KeyError as err:
         raise RuntimeError(
             "No recipients defined. Make sure a RECIPIENTS environment variable is set"
-            ' in the format "Recipient a <a@example.com>; <b@example.com>"'
+            ' in the format "Recipient a <a@example.com>, <b@example.com>"'
         ) from err
 
     try:
