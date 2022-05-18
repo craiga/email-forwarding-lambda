@@ -19,5 +19,7 @@ jobs:
         run: pip install --requirement requirements.txt
       - name: pre-commit
         uses: pre-commit/action@v2.0.3
+        env:
+          AWS_DEFAULT_REGION: us-east-1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
