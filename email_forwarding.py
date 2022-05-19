@@ -24,7 +24,10 @@ ALLOWED_HEADERS = [
 ]
 
 
-def lambda_handler(event: Mapping[str, Any], context: object) -> None:
+def lambda_handler(
+    event: Mapping[str, Any], context: object  # pylint: disable=unused-argument
+) -> None:
+    """Handle call to lambda function."""
     logger.debug("recieved event: %s", json.dumps(event))
     s3 = boto3.client("s3")
     ses = boto3.client("ses")

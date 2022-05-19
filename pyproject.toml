@@ -8,6 +8,10 @@ load-plugins = [
     "pylint_absolute_imports",
     "pylint_pytest",
 ]
+good-names = [
+  "s3",
+]
+
 
 [tool.pylint.basic]
 docstring-min-length = 5
