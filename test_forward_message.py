@@ -1,17 +1,22 @@
 """Test forwarding a message."""
 
+import logging
 import os
 from unittest import mock
 
 import boto3
 import moto
+import pytest
 
 import email_forwarding
 
 
+@pytest.mark.parametrize(
+    "event_name", ["ObjectCreated:Put", "ObjectCreated:CompleteMultipartUpload"]
+)
 @moto.mock_s3  # type: ignore
 @moto.mock_ses  # type: ignore
-def test_forward_message() -> None:
+def test_forward_message(event_name: str, caplog: pytest.LogCaptureFixture) -> None:
     """Test forwarding a message."""
     # Set up message in S3.
     s3 = boto3.client("s3")
@@ -45,21 +50,26 @@ The Amazon SES Team
     ses.verify_email_identity(EmailAddress="forwarder@example.com")
 
     with mock.patch.dict(os.environ, {"FORWARDER": "forwarder@example.com"}):
-        email_forwarding.lambda_handler(
-            {
-                "Records": [
-                    {
-                        "eventSource": "aws:s3",
-                        "eventName": "ObjectCreated:Put",
-                        "s3": {
-                            "bucket": {"name": "my-bucket"},
-                            "object": {"key": "message-key"},
-                        },
-                    }
-                ]
-            },
-            None,
-        )
+        with caplog.at_level(logging.WARNING):
+            email_forwarding.lambda_handler(
+                {
+                    "Records": [
+                        {
+                            "eventSource": "aws:s3",
+                            "eventName": event_name,
+                            "s3": {
+                                "bucket": {"name": "my-bucket"},
+                                "object": {"key": "message-key"},
+                            },
+                        }
+                    ]
+                },
+                None,
+            )
+
+    assert "Unknown event" not in caplog.text
 
     send_stats = ses.get_send_statistics()
     assert len(send_stats["SendDataPoints"]) == 1
+    for zero_key in ["Bounces", "Complaints", "Rejects"]:
+        assert send_stats["SendDataPoints"][0][zero_key] == 0
