@@ -1,3 +1,5 @@
+"""Test forwarding a message."""
+
 import os
 from unittest import mock
 
@@ -10,6 +12,7 @@ import email_forwarding
 @moto.mock_s3  # type: ignore
 @moto.mock_ses  # type: ignore
 def test_forward_message() -> None:
+    """Test forwarding a message."""
     # Set up message in S3.
     s3 = boto3.client("s3")
     s3.create_bucket(
