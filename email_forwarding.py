@@ -67,10 +67,10 @@ def lambda_handler(
         ) from err
 
     for record in event["Records"]:
-        if (
-            record["eventSource"] == "aws:s3"
-            and record["eventName"] == "ObjectCreated:Put"
-        ):
+        if record["eventSource"] == "aws:s3" and record["eventName"] in [
+            "ObjectCreated:Put",
+            "ObjectCreated:CompleteMultipartUpload",
+        ]:
 
             with TemporaryFile() as message_file:
                 s3.download_fileobj(
