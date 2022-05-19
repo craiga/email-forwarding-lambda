@@ -20,6 +20,6 @@ jobs:
       - name: pre-commit
         uses: pre-commit/action@v2.0.3
         env:
-          AWS_DEFAULT_REGION: us-east-1
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
