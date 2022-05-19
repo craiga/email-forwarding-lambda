@@ -9,6 +9,23 @@ from typing import Any, Mapping
 
 import boto3
 
+try:
+    import sentry_sdk
+    from sentry_sdk.integrations import aws_lambda as sentry_aws_lambda
+    from sentry_sdk.integrations import logging as sentry_logging
+
+    sentry_sdk.init(
+        integrations=[
+            sentry_aws_lambda.AwsLambdaIntegration(timeout_warning=True),
+            sentry_logging.LoggingIntegration(
+                level=logging.INFO, event_level=logging.WARNING
+            ),
+        ]
+    )
+except ModuleNotFoundError:
+
+    pass
+
 logging.captureWarnings(True)
 logger = logging.getLogger(__name__)
 logger.setLevel(os.environ.get("LOG_LEVEL", "INFO"))
